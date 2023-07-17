@@ -14,7 +14,7 @@
     @vite('resources/css/app.css')
     @livewireStyles
 </head>
-<body >
+<body class="bg-gray-100">
     
     <div class="flex">
         <div class="">
@@ -50,22 +50,6 @@
             </aside>
         </div>
         @livewire('show-items')
-        <div class="">
-            <aside id="right" class="sticky h-screen top-0 right-0 w-96 " aria-label="Sidebar">
-                <div class="p-8 flex h-full flex-col bg-[#FFF0DE]">
-                    <div class="bg-[#80485B]  flex h-[129.91px] rounded-3xl flex-row gap-12 w-auto">
-                        <div class="ml-4 mr-12 mb-6">
-                            <img class="absolute left-13 top-3" src="img/source.svg" alt="">
-                        </div>
-                        <div class="pb-3 pt-3 pl-4 pr-4 font-quicksand font-bold">
-                            <p class="font-quicksand font-bold text-white mb-2 ">Didn't find what you need?</p>
-                            <button class="w-28 h-10 flex items-center justify-center bg-white text-[#34333A] rounded-lg hover:bg-slate-100 font-bold" type="submit">Add item</button>
-                        </div>
-                    </div>
-                    <h1 class="mt-8 font-quicksand text-2xl font-bold">Shopping list</h1>
-                </div> 
-            </aside>
-        </div>
     </div>  
     <script>
         function toggleHover(element) {
