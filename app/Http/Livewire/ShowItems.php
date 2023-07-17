@@ -21,6 +21,8 @@ class ShowItems extends Component
     public $selectedItemName ;
     public $selectedItemNote ;
     public $selectedItemCategory;
+    public $selectedItem ;
+    public $showNoItems = true;
 
 
     public function render()
@@ -68,35 +70,46 @@ class ShowItems extends Component
     }
 
     public function showItemDetails($itemId)
-{
-    // Buscar el item en la base de datos por su ID
-    $item = Item::find($itemId);
+    {
+        // Buscar el item en la base de datos por su ID
+        $item = Item::find($itemId);
 
-    //Almacenar los datos del item en propiedades del componente
-    $this->selectedItemId = $item->id;
-    $this->selectedItemImage = $item->image;
-    $this->selectedItemName = $item->name;
-    $this->selectedItemNote = $item->note;
-    $this->selectedItemCategory = $item->category_id;
-}
+        //Almacenar los datos del item en propiedades del componente
+        $this->selectedItemId = $item->id;
+        $this->selectedItemImage = $item->image;
+        $this->selectedItemName = $item->name;
+        $this->selectedItemNote = $item->note;
+        $this->selectedItemCategory = $item->category->name;
+        $this->selectedItem = $item;
+    }
 
-public function resetSelectedItem()
-{
-    $this->selectedItemId = null;
-    $this->selectedItemImage = null;
-    $this->selectedItemName = null;
-    $this->selectedItemCategory = null;
-    $this->selectedItemNote = null;
-}
+    public function resetSelectedItem()
+    {
+        $this->selectedItemId = null;
+        $this->selectedItemImage = null;
+        $this->selectedItemName = null;
+        $this->selectedItemCategory = null;
+        $this->selectedItemNote = null;
 
-public function deleteSelectedItem()
-{
-    // Aquí puedes implementar la lógica para eliminar el item seleccionado de la base de datos
-    // Por ejemplo, puedes usar el ID del item almacenado en $selectedItemId para eliminarlo
+        $this->showNoItems = true;
+    }
 
-    // Después de eliminar el item, restablece el estado y muestra la lista nuevamente
-    $this->resetSelectedItem();
-}
+    public function deleteSelectedItem()
+    {
+        // Después de eliminar el item, restablece el estado y muestra la lista nuevamente
+        $this->resetSelectedItem();
+    }
+
+    public function showItemCat($itemId)
+    {
+        // Buscar el item en la base de datos por su ID
+        $item = Item::find($itemId);
+
+        // Almacenar el item seleccionado en la propiedad del componente
+        $this->selectedItem = $item;
+
+        $this->showNoItems = false;
+    }
 
 
 }
