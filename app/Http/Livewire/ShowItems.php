@@ -16,6 +16,12 @@ class ShowItems extends Component
     public $image;
     public $category;
     public $imageUrl; 
+    public $selectedItemId;
+    public $selectedItemImage;
+    public $selectedItemName ;
+    public $selectedItemNote ;
+    public $selectedItemCategory;
+
 
     public function render()
     {
@@ -60,4 +66,37 @@ class ShowItems extends Component
         $this->category = '';
         $this->imageUrl = ''; // Limpia la URL de la imagen
     }
+
+    public function showItemDetails($itemId)
+{
+    // Buscar el item en la base de datos por su ID
+    $item = Item::find($itemId);
+
+    //Almacenar los datos del item en propiedades del componente
+    $this->selectedItemId = $item->id;
+    $this->selectedItemImage = $item->image;
+    $this->selectedItemName = $item->name;
+    $this->selectedItemNote = $item->note;
+    $this->selectedItemCategory = $item->category_id;
+}
+
+public function resetSelectedItem()
+{
+    $this->selectedItemId = null;
+    $this->selectedItemImage = null;
+    $this->selectedItemName = null;
+    $this->selectedItemCategory = null;
+    $this->selectedItemNote = null;
+}
+
+public function deleteSelectedItem()
+{
+    // Aquí puedes implementar la lógica para eliminar el item seleccionado de la base de datos
+    // Por ejemplo, puedes usar el ID del item almacenado en $selectedItemId para eliminarlo
+
+    // Después de eliminar el item, restablece el estado y muestra la lista nuevamente
+    $this->resetSelectedItem();
+}
+
+
 }
