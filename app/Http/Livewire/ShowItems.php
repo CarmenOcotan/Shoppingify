@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use App\Models\Category;
 use App\Models\Item;
 use App\Models\Listname;
+use Illuminate\Support\Collection;
 use Livewire\Component;
 
 class ShowItems extends Component
@@ -15,15 +16,21 @@ class ShowItems extends Component
     public $note;
     public $image;
     public $category;
-    public $imageUrl; 
+    public $imageUrl;
     public $selectedItemId;
     public $selectedItemImage;
-    public $selectedItemName ;
-    public $selectedItemNote ;
+    public $selectedItemName;
+    public $selectedItemNote;
     public $selectedItemCategory;
-    public $selectedItem ;
+    public $selectedItem;
     public $showNoItems = true;
+    public $selectedCategories;
+    public $selectedCategory;
 
+    public function mount()
+    {
+        $this->selectedCategories = new Collection();
+    }
 
     public function render()
     {
@@ -41,7 +48,7 @@ class ShowItems extends Component
 
     public function addItem()
     {
-        // lógica para agregar un nuevo elemento a la base de datos
+        // Lógica para agregar un nuevo elemento a la base de datos
         $newItem = new Item();
         $newItem->name = $this->name;
         $newItem->note = $this->note;
@@ -59,7 +66,7 @@ class ShowItems extends Component
             $newItem->save();
         }
 
-        // restablece el estado y muestra la lista nuevamente
+        // Restablece el estado y muestra la lista nuevamente
         $this->showForm = false;
         $this->search = ''; // Limpia el campo de búsqueda si es necesario
         $this->name = '';
@@ -74,13 +81,16 @@ class ShowItems extends Component
         // Buscar el item en la base de datos por su ID
         $item = Item::find($itemId);
 
-        //Almacenar los datos del item en propiedades del componente
+        // Almacenar los datos del item en propiedades del componente
         $this->selectedItemId = $item->id;
         $this->selectedItemImage = $item->image;
         $this->selectedItemName = $item->name;
         $this->selectedItemNote = $item->note;
         $this->selectedItemCategory = $item->category->name;
         $this->selectedItem = $item;
+
+        // Resetear la colección de categorías seleccionadas
+        $this->selectedCategories = new Collection();
     }
 
     public function resetSelectedItem()
@@ -90,12 +100,18 @@ class ShowItems extends Component
         $this->selectedItemName = null;
         $this->selectedItemCategory = null;
         $this->selectedItemNote = null;
+        $this->selectedItem = null;
 
         $this->showNoItems = true;
+
+        // Resetear la colección de categorías seleccionadas
+        $this->selectedCategories = new Collection();
     }
 
     public function deleteSelectedItem()
     {
+        // Lógica para eliminar el item seleccionado de la base de datos
+
         // Después de eliminar el item, restablece el estado y muestra la lista nuevamente
         $this->resetSelectedItem();
     }
@@ -108,8 +124,14 @@ class ShowItems extends Component
         // Almacenar el item seleccionado en la propiedad del componente
         $this->selectedItem = $item;
 
+        // Agregar la categoría seleccionada a la colección
+        $this->selectedCategories->push($item->category->name);
+
+        // Mostrar el div de "ItemsSelect" y ocultar el div de "NoItems"
         $this->showNoItems = false;
     }
 
+
+    
 
 }

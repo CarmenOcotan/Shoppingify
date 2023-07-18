@@ -60,9 +60,12 @@
             });
 
             element.classList.add('border-l-4', 'border-yellow-500');
+
         }
     </script>
+
     @livewireScripts
+   
 </body>
 </html>
 

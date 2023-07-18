@@ -30,13 +30,20 @@
                             <div class="mb-3 mt-8">{{ $category->name }}</div>
                             <div class="grid grid-cols-4 gap-3">
                                 @foreach ($categoryItems as $item)
-                                    <div class="bg-white rounded-lg shadow-md flex justify-between w-40 cursor-pointer p-3">
-                                        <button wire:click="showItemDetails({{ $item->id }})" class="flex-grow-1 h-auto">{{ $item->name }}</button>
-                                        <button wire:click="showItemCat({{ $item->id }})" class="text-gray-500 dark:text-gray-400">
-                                            <i class="fa-solid fa-plus"></i>
-                                        </button>
-                                    </div>
-                                @endforeach
+                                <div class="bg-white rounded-lg shadow-md flex justify-between w-40 cursor-pointer p-3">
+                                    <button wire:click="showItemDetails({{ $item->id }})" class="flex-grow-1 h-auto">{{ $item->name }}</button>
+                                    <button id="addButton_{{ $item->id }}" wire:click="showItemCat({{ $item->id }})" class="text-gray-500 dark:text-gray-400">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                </div>
+                                <script>
+                                    var addButton = document.querySelector('#addButton_{{ $item->id }}');
+                                    addButton.addEventListener('click', function() {
+                                        pcs.style.display = 'none';
+                                        pcs2.style.display = 'flex';
+                                    });
+                                </script>
+                            @endforeach
                             </div>
                         @endif
                     @endforeach
@@ -47,7 +54,7 @@
     <div class="">
         <div class="">
             <aside id="right" class="sticky overflow-y-auto h-screen top-0 right-0 w-96 " aria-label="Sidebar">
-                <div class="p-8 pb-0 flex h-full flex-col bg-[#FFF0DE] justify-between items-center">
+                <div class="p-8 pb-0 flex h-full flex-col bg-[#FFF0DE] ">
                     <div class="bg-[#80485B]  flex h-[129.91px] rounded-3xl flex-row gap-12 w-auto">
                         <div class="ml-4 mr-12 mb-6">
                             <img class="absolute left-13 top-3" src="img/source.svg" alt="">
@@ -57,31 +64,59 @@
                             <button wire:click="toggleForm" class="w-28 h-10 flex items-center justify-center bg-white text-[#34333A] rounded-lg hover:bg-slate-100 font-bold" type="submit">Add item</button>  
                         </div>
                     </div>
-                <div class="ItemsSelect flex flex-col ">
-                    @if ($selectedItem)
-                        <div class="font-bold text-2xl ">
-                            Shopping list
-                        </div>
-                        <div class="flex flex-col gap-3 font-medium">
-                            <div class="text-[#828282]">
-                                {{ $selectedItem->category->name }}
+                    <div class="ItemsSelect gap-8 pt-8 flex flex-col ">
+                        @if ($selectedItem)
+                            <div class="font-bold text-2xl flex justify-between">
+                                Shopping list
+                                <svg xmlns="http://www.w3.org/2000/svg" height="25" viewBox="0 -960 960 960" width="25"><path d="M794-666 666-794l42-42q17-17 42.5-16.5T793-835l43 43q17 17 17 42t-17 42l-42 42Zm-42 42L248-120H120v-128l504-504 128 128Z"/></svg>
                             </div>
-                            <div class="text-lg">
-                                {{ $selectedItem->name }}
+                            <div class="flex flex-col gap-3 font-medium">
+                                <div class="text-[#828282]">
+                                    {{ $selectedItem->category->name }}
+                                    
+                                </div>
+                                <div class="text-lg flex justify-between">
+                                    <div>
+                                        {{ $selectedItem->name }}
+                                    </div>
+                                    <div id="pcs" class="cursor-pointer w-20 h-11 flex items-center justify-center bg-inherit border-2 rounded-3xl border-[#F9A109] text-[#F9A109]" data-projection-id="91" style="transform: none;"><span>1</span> pcs</div>
+                                    <div id="pcs2" class="flex h-11 justify-center text-[#F9A109] rounded-3xl bg-white" style="display: none;">
+                                      <div class="cursor-pointer p-2 flex items-center bg-[#F9A109] text-white h-full rounded-3xl" style="transform: none;">
+                                        <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                                          <path fill="none" d="M0 0h24v24H0V0z"></path>
+                                          <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM8 9h8v10H8V9zm7.5-5l-1-1h-5l-1 1H5v2h14V4h-3.5z"></path>
+                                        </svg>
+                                      </div>
+                                      <div class="gap-1 ml-2 flex justify-center">
+                                        <button class="">
+                                          <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024" height="1em" width="1rem" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M872 474H152c-4.4 0-8 3.6-8 8v60c0 4.4 3.6 8 8 8h720c4.4 0 8-3.6 8-8v-60c0-4.4-3.6-8-8-8z"></path>
+                                          </svg>
+                                        </button>
+                                        <div id="efecto" class="cursor-pointer w-20 flex items-center justify-center bg-inherit border-2 rounded-3xl border-[#F9A109] text-[#F9A109]" style="transform: none;"><span>1</span> pcs</div>
+                                        <button class="">
+                                          <svg stroke="currentColor" fill="currentColor" stroke-width="0" t="1551322312294" viewBox="0 0 1024 1024" version="1.1" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+                                            <defs></defs>
+                                            <path d="M474 152m8 0l60 0q8 0 8 8l0 704q0 8-8 8l-60 0q-8 0-8-8l0-704q0-8 8-8Z"></path>
+                                            <path d="M168 474m8 0l672 0q8 0 8 8l0 60q0 8-8 8l-672 0q-8 0-8-8l0-60q0-8 8-8Z"></path>
+                                          </svg>
+                                        </button>
+                                      </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    @endif
-                </div>
-                <div class="NoItems" wire:loading.remove>
-                    @if ($showNoItems)
-                        <div>
-                            <h1 class="font-bold">No items</h1>
-                        </div>
-                        <div>
-                            <img src="img/undraw_shopping_app_flsj.svg" alt="">
-                        </div>
-                    @endif
-                </div>
+                        @endif
+                    </div>
+                    <div class="NoItems flex flex-col flex-nowrap items-center" wire:loading.remove>
+                        @if ($showNoItems)
+                            <div>
+                                <h1 class="font-bold">No items</h1>
+                            </div>
+                            <div class="pt-60">
+                                <img src="img/undraw_shopping_app_flsj.svg" alt="">
+                            </div>
+                        @endif
+                    </div>
                 </div> 
                 <div class="h-24 bg-white flex justify-center">
                     <form class="text-black flex justify-center items-center ">
@@ -177,3 +212,18 @@
         @endif
     </div>
 </div>
+<script>
+    var pcs = document.getElementById('pcs');
+    var pcs2 = document.getElementById('pcs2');
+    var efecto = document.getElementById('efecto');
+  
+    pcs.addEventListener('click', function() {
+      pcs.style.display = 'none';
+      pcs2.style.display = 'flex';
+    });
+  
+    efecto.addEventListener('click', function() {
+      pcs.style.display = 'flex';
+      pcs2.style.display = 'none';
+    });
+  </script>
